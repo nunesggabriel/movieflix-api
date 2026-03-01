@@ -80,6 +80,26 @@ return res.status(500).send({ message: "Erro ao atualizar o filme" });
 
 });
 
+app.delete("/movies/:id", async (req, res) => {
+  
+  const id = Number(req.params.id);
+
+  try {
+  const movie = await prisma.movie.findUnique({where: { id }});
+  if (!movie) {
+    return res.status(404).send({ message: "Filme não encontrado" });
+  }else
+
+  await prisma.movie.delete({
+    where: { id },
+  }); }catch (error) {
+    return res.status(500).send({ message: "Erro ao deletar o filme" });
+  }
+
+
+});
+
+
 
 app.listen(port, () => {
   console.log(`Servidor em execução http://localhost:${port}`);
