@@ -1,19 +1,17 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "MovieFlix API",
-        "description": "API para gerenciamento de filmes do MovieFlix",
+        "title": "API de Filmes",
+        "description": "API para gerenciamento de filmes",
         "version": "1.0.0"
     },
     "paths": {
         "/movies": {
             "get": {
-                "tags": ["Movie"],
                 "summary": "Obter todos os filmes",
-                "description": "Retorna uma lista de filmes disponíveis no MovieFlix",
                 "responses": {
                     "200": {
-                        "description": "Lista de filmes retornada com sucesso",
+                        "description": "Retorna uma lista de filmes",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -27,66 +25,111 @@
                     }
                 }
             }
-        }
-    },
-    "components": {
-        "schemas": {
-            "Movie": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "description": "ID do filme"
-                    },
-                    "title": {
-                        "type": "string",
-                        "description": "Título do filme"
-                    },
-                    "genre_id": {
-                        "type": "integer",
-                        "description": "Gênero do filme"
-                    },
-                    "genres": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "description": "ID do gênero"
-                            },
-                            "name": {
-                                "type": "string",
-                                "description": "Nome do gênero"
+        },
+        "/movies/{id}": {
+            "put": {
+                "summary": "Atualizar um filme existente",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID do filme a ser atualizado",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MovieInput"
                             }
                         }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Filme atualizado com sucesso"
                     },
-                    "language_id": {
-                        "type": "integer",
-                        "description": "Idiomas do filme"
+                    "404": {
+                        "description": "Filme não encontrado"
                     },
-                        "languages": {
-                        "type": "object",
-                        "properties": {
-                            "id": {
-                                "type": "integer",
-                                "description": "ID do idioma"
-                            },
-                            "name": {
-                                "type": "string",
-                                "description": "Nome do idioma"
-                            }
-                        }
-                    },
-                    "oscar_count": {
-                        "type": "integer",
-                        "description": "Número de Oscars ganhos pelo filme"
-                    },
-                    "release_date": {
-                        "type": "string",
-                        "format": "date",
-                        "description": "Data de lançamento do filme"
+                    "500": {
+                        "description": "Erro interno do servidor"
                     }
                 }
-            }
+            },
+            "delete": {}
         }
+    },
+   "components": {
+  "schemas": {
+    "Movie": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "ID do filme"
+        },
+        "title": {
+          "type": "string",
+          "description": "Título do filme"
+        },
+        "genre": {
+          "type": "string",
+          "description": "Gênero do filme"
+        },
+        "language": {
+          "type": "string",
+          "description": "Idioma do filme"
+        },
+        "oscar_count": {
+          "type": "integer",
+          "description": "Quantidade de Oscars ganhos pelo filme"
+        },
+        "release_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Data de lançamento do filme"
+        }
+      }
+    },
+    "MovieInput": {
+      "type": "object",
+      "required": [
+        "title",
+        "genre_id",
+        "language_id",
+        "oscar_count",
+        "release_date"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Título do filme"
+        },
+        "genre_id": {
+          "type": "integer",
+          "description": "ID do gênero do filme"
+        },
+        "language_id": {
+          "type": "integer",
+          "description": "ID do idioma do filme"
+        },
+        "oscar_count": {
+          "type": "integer",
+          "description": "Quantidade de Oscars ganhos pelo filme"
+        },
+        "release_date": {
+          "type": "string",
+          "format": "date",
+          "description": "Data de lançamento do filme"
+        }
+      }
     }
+  }
+}
 }
